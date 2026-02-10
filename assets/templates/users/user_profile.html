@@ -1,0 +1,198 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>WoOx Travel - About Us</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/templatemo-woox-travel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+<!--
+
+TemplateMo 580 Woox Travel
+
+https://templatemo.com/tm-580-woox-travel
+
+-->
+  </head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="{% url 'index' %}" class="logo">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="{% url 'user_console' %}" class="active">Userdashboard</a></li>
+                        <li><a href="{% url 'prediction' %}">Prediction</a></li>
+                        <li><a href="{% url 'user_profile' %}">Profile</a></li>
+                        
+                        <li><a href="{% url 'index' %}">Logout</a></li>
+                    </ul>   
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <br><br>
+  <br><br>
+
+  <!-- ***** Header Area End ***** -->
+
+
+
+  
+
+  <!-- ***** Main Banner Area Start ***** -->
+  <center>
+    <h1>My <strong class="black">Profile</strong></h1><br><br><br>
+</div>
+</div>
+</div>
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="row">
+    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+
+        <div class="service-box" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <h1>Your Profile</h1>
+            <hr>
+            <img style="height:270px" src="/media/{{i.user_profile}}" />
+            <label for="fileInput" class="btn btn-primary mt-3">Select Image</label>
+            <input id="fileInput" type="file" name="image" style="display: none;">
+            <div class=" col-md-12" style="margin-top: -5px;"><br>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+        <div class="service-box">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <br><br><br>
+                    <h4 style="text-align: left;">Email</h4>
+                    <input class="form-control" placeholder="Email" type="email" name="email_address" value="{{i.email}}">
+                </div>
+                <div class=" col-md-6">
+                    <h4 style="text-align: left;">User Frist name</h4>
+                    <input class="form-control" placeholder="Username" type="text" name="user_name" value="{{i.fname}}">
+                </div>
+                <div class=" col-md-6">
+                    <h4 style="text-align: left;">User Last name</h4>
+                    <input class="form-control" placeholder="Username" type="text" name="user_lname" value="{{i.fname}}">
+                </div>
+                <div class=" col-md-6">
+                    <h4 style="text-align: left;">Password</h4>
+                    <input class="form-control" type="text" name="email_password" value="{{i.password}}">
+                </div>
+                <div class=" col-md-6">
+                    <h4 style="text-align: left;">Age</h4>
+                    <input class="form-control" placeholder="Date" type="number" name="age" value="{{i.age}}">
+                </div>
+                <div class=" col-md-6">
+                    <h4 style="text-align: left;">Contact</h4>
+                    <input class="form-control" placeholder="Contact" type="text" name="contact_number" value="{{i.mobile}}">
+                </div>
+                <div class=" col-md-12" style="margin-top: -5px;"><br>
+
+                    <button class="btn btn-primary" type="submit">Edit Profile</button>
+                </div>
+            </div>
+</form>
+</div>
+</div>
+
+</div>
+</center>
+
+  
+  
+              
+            
+            
+            
+            
+              
+            
+     
+  <!-- ***** Main Banner Area End ***** -->
+  
+  
+<br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br><br>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright © 2036 <a href="#">WoOx Travel</a> Company. All rights reserved. 
+          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+  <script src="{% static 'js/isotope.min.js' %}"></script>
+  <script src="{% static 'js/owl-carousel.js' %}"></script>
+  <script src="{% static 'js/wow.js' %}"></script>
+  <script src="{% static 'js/tabs.js' %}"></script>
+  <script src="{% static 'js/popup.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+
+  <script>
+    $(".option").click(function(){
+      $(".option").removeClass("active");
+      $(this).addClass("active"); 
+    });
+  </script>
+
+  </body>
+
+</html>
