@@ -1,201 +1,369 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Fake News | Create Account</title>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<title>WoOx Travel Bootstrap 5 Theme</title>
-
-<!-- Bootstrap -->
-<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
-<!-- Theme CSS -->
-<link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
-<link rel="stylesheet" href="{% static 'css/templatemo-woox-travel.css' %}">
-<link rel="stylesheet" href="{% static 'css/owl.css' %}">
-<link rel="stylesheet" href="{% static 'css/animate.css' %}">
-<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-
-<style>
-    /* ===== HARD FIX: background stability ===== */
-    html, body {
-        background-color: #1f1f1f;
-        overflow-x: hidden;
-    }
-
-    /* ===== Registration Section ===== */
-    .registration-section {
-        padding: 140px 0 120px;
-        background-color: #1f1f1f;
-        min-height: 100vh;
-    }
-
-    .register-wrapper {
-        max-width: 900px;
-        margin: auto;
-    }
-
-    /* FIX: heading visibility */
-    .register-title {
-        color: #ffffff;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 40px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .register-wrapper label {
-        color: #ff5f5f;
-        font-size: 13px;
-        margin-bottom: 5px;
-    }
-
-    .register-wrapper .form-control {
-        height: 46px;
-        font-size: 14px;
-        border-radius: 6px;
-        background-color: #ffffff;
-    }
-
-    .register-wrapper .form-control:focus {
-        box-shadow: none;
-        border-color: #1e90ff;
-    }
-
-    .register-wrapper .btn-primary {
-        font-size: 16px;
-        padding: 12px;
-        border-radius: 6px;
-    }
-
-    @media (max-width: 768px) {
-        .registration-section {
-            padding: 120px 15px 100px;
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: '#3b82f6',
+            dark: '#0f172a',
+          },
         }
+      }
     }
-</style>
+  </script>
 
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+    }
+
+    .auth-card {
+      background: white;
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+      border: 1px solid #f1f5f9;
+    }
+
+    .input-field {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      transition: all 0.2s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background-color: white;
+    }
+
+    .floating-blob {
+      animation: pulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1) translate(0, 0);
+      }
+
+      100% {
+        transform: scale(1.05) translate(20px, -20px);
+      }
+    }
+
+    .file-upload-area {
+      border: 2px dashed #cbd5e1;
+      background-color: #f8fafc;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .file-upload-area:hover {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+    }
+  </style>
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden">
 
-<!-- Preloader -->
-<div id="js-preloader" class="js-preloader">
-  <div class="preloader-inner">
-    <span class="dot"></span>
-    <div class="dots">
-      <span></span><span></span><span></span>
+  <!-- Subtle Background Blobs -->
+  <div class="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
+    <div
+      class="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60 floating-blob">
     </div>
+    <div
+      class="absolute bottom-[-10%] left-[-5%] w-[35%] h-[35%] bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60 floating-blob"
+      style="animation-duration: 12s; animation-direction: alternate-reverse;"></div>
   </div>
-</div>
 
-<!-- Header -->
-<header class="header-area header-sticky">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <nav class="main-nav">
-          <a href="{% url 'index' %}" class="logo">
-            <img src="{% static 'images/logo.png' %}" alt="">
-          </a>
-          <ul class="nav">
-            <li><a href="{% url 'index' %}" class="active">Home</a></li>
-            <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="{% url 'admin_login' %}">Admin</a></li>
-            <li><a href="{% url 'reservation' %}">User</a></li>
-            <li><a href="{% url 'index' %}">Logout</a></li>
-          </ul>
-          <a class="menu-trigger"><span>Menu</span></a>
+  <!-- Header -->
+  <header class="fixed w-full top-0 z-50 navbar py-4">
+    <div class="container mx-auto px-6 max-w-7xl">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <a href="{% url 'index' %}" class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 0 01-8.618 3.04A12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+              </path>
+            </svg>
+          </div>
+          <span class="text-2xl font-bold text-dark tracking-tight">Fake<span class="text-primary">News</span></span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav class="hidden md:flex items-center gap-8 font-medium">
+          <a href="{% url 'index' %}" class="text-slate-500 hover:text-dark transition-colors">Home</a>
+          <a href="{% url 'about' %}" class="text-slate-500 hover:text-dark transition-colors">About</a>
+          <a href="{% url 'admin_login' %}" class="text-slate-500 hover:text-dark transition-colors">Admin</a>
         </nav>
       </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- Registration Section -->
-<section class="registration-section">
-    <div class="container register-wrapper">
+  <!-- Main Content -->
+  <main class="flex-grow flex items-center justify-center px-6 pt-32 pb-20">
+    <div class="w-full max-w-2xl relative z-10">
+      <div class="auth-card">
+        <a href="{% url 'index' %}"
+          class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-dark mb-6 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+            </path>
+          </svg>
+          Back to Home
+        </a>
 
-        <h1 class="register-title">Users Registration</h1>
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-bold text-dark mb-2 tracking-tight">Create your account</h2>
+          <p class="text-slate-500">Join us to start fact-checking journalism</p>
+        </div>
 
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+        {% if error %}
+        <div
+          class="mt-6 bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-2xl flex items-center justify-center gap-3 font-medium animate-pulse shadow-sm mb-6">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+            </path>
+          </svg>
+          {{ error }}
+        </div>
+        {% endif %}
 
-            <div class="row g-3 justify-content-center">
+        {% if messages %}
+        <div class="space-y-4 mb-6">
+          {% for message in messages %}
+          <div
+            class="px-4 py-3 rounded-xl flex items-start gap-3 text-sm font-medium border {% if message.tags == 'error' %}bg-red-50 border-red-200 text-red-600{% elif message.tags == 'success' %}bg-green-50 border-green-200 text-green-600{% else %}bg-blue-50 border-blue-200 text-blue-600{% endif %}">
+            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {% if message.tags == 'error' %}
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+              </path>
+              {% elif message.tags == 'success' %}
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              {% else %}
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              {% endif %}
+            </svg>
+            <p>{{ message }}</p>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
 
-                <div class="col-md-5 col-sm-12">
-                    <label>Your First Name</label>
-                    <input type="text" class="form-control" name="fname" placeholder="Enter First Name">
-                </div>
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
 
-                <div class="col-md-5 col-sm-12">
-                    <label>Your Last Name</label>
-                    <input type="text" class="form-control" name="lname" placeholder="Enter Last Name">
-                </div>
-
-                <div class="col-md-5 col-sm-12">
-                    <label>Your Email</label>
-                    <input type="email" class="form-control" name="email" placeholder="Enter Email">
-                </div>
-
-                <div class="col-md-5 col-sm-12">
-                    <label>Your Password</label>
-                    <input type="password" class="form-control" name="pwd" placeholder="Enter Password">
-                </div>
-
-                <div class="col-md-5 col-sm-12">
-                    <label>Your Mobile</label>
-                    <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile Number">
-                </div>
-
-                <div class="col-md-5 col-sm-12">
-                    <label>Your Age</label>
-                    <input type="number" class="form-control" name="age" placeholder="Enter Age">
-                </div>
-
-                <div class="col-md-10 col-sm-12">
-                    <label>Profile Image</label>
-                    <input type="file" class="form-control" name="profile" accept="image/*">
-                </div>
-
-                <div class="col-md-10 col-sm-12">
-                    <button class="btn btn-primary w-100 mt-3" type="submit">
-                        Register
-                    </button>
-                </div>
-
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- First Name -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">First Name</label>
+              <input type="text" name="fname" required placeholder="John"
+                class="input-field block w-full px-4 py-3 rounded-xl text-sm placeholder-slate-400">
             </div>
-        </form>
-    </div>
-</section>
 
-<!-- Footer -->
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <p>
-          Copyright © 2036 <a href="#">WoOx Travel</a>.
-          <br>Design: <a href="https://templatemo.com" target="_blank">TemplateMo</a>
+            <!-- Last Name -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Last Name</label>
+              <input type="text" name="lname" required placeholder="Doe"
+                class="input-field block w-full px-4 py-3 rounded-xl text-sm placeholder-slate-400">
+            </div>
+
+            <!-- Email -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+              <input type="email" name="email" required placeholder="johndoe@example.com"
+                class="input-field block w-full px-4 py-3 rounded-xl text-sm placeholder-slate-400">
+            </div>
+
+            <!-- Password -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+              <input type="password" name="pwd" required placeholder="••••••••"
+                class="input-field block w-full px-4 py-3 rounded-xl text-sm placeholder-slate-400">
+            </div>
+
+            <!-- Mobile -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Mobile Number</label>
+              <input type="text" name="mobile" required placeholder="+1 (555) 000-0000"
+                class="input-field block w-full px-4 py-3 rounded-xl text-sm placeholder-slate-400">
+            </div>
+
+            <!-- Age -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Age</label>
+              <input type="number" name="age" required placeholder="25"
+                class="input-field block w-full px-4 py-3 rounded-xl text-sm placeholder-slate-400">
+            </div>
+
+            <!-- Divider cell to align with grid if needed, leaving empty or spans full width for file upload -->
+            <div class="md:col-span-2 pt-2">
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Profile Image</label>
+              <div class="relative flex items-center justify-center w-full">
+                <label id="upload-label"
+                  class="flex flex-col items-center justify-center w-full h-40 file-upload-area cursor-pointer relative overflow-hidden group">
+                  <!-- Preview Image (Hidden by default) -->
+                  <div id="image-preview-container" class="absolute inset-0 z-10 hidden bg-white">
+                    <img id="image-preview" src="#" alt="Preview" class="w-full h-full object-cover">
+                    <div
+                      class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <p class="text-white text-xs font-bold uppercase tracking-widest">Change Photo</p>
+                    </div>
+                  </div>
+
+                  <div id="upload-placeholder"
+                    class="flex flex-col items-center justify-center pt-5 pb-6 pointer-events-none">
+                    <div id="upload-icon"
+                      class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-3 transition-all duration-300">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                      </svg>
+                    </div>
+                    <p id="upload-text" class="mb-2 text-sm text-slate-500"><span
+                        class="font-semibold text-blue-600">Click to upload</span> or drag and drop</p>
+                    <p id="upload-subtext" class="text-xs text-slate-400">PNG, JPG or GIF (max. 800x400px)</p>
+                  </div>
+                  <input type="file" id="profile-input" name="profile" accept="image/*"
+                    class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-20" required />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <button type="submit"
+              class="btn-primary w-full px-4 py-4 rounded-xl font-semibold text-base flex items-center justify-center gap-2">
+              Create Account
+            </button>
+          </div>
+        </form>
+
+        <p class="mt-8 text-center text-sm text-slate-500">
+          Already have an account?
+          <a href="{% url 'user_login' %}" class="font-semibold text-blue-600 hover:text-blue-500">Log in</a>
         </p>
       </div>
     </div>
-  </div>
-</footer>
+  </main>
 
-<!-- Scripts -->
-<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/isotope.min.js' %}"></script>
-<script src="{% static 'js/owl-carousel.js' %}"></script>
-<script src="{% static 'js/wow.js' %}"></script>
-<script src="{% static 'js/tabs.js' %}"></script>
-<script src="{% static 'js/popup.js' %}"></script>
-<script src="{% static 'js/custom.js' %}"></script>
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-100 py-10 mt-auto relative z-10">
+    <div class="container mx-auto px-6 max-w-7xl">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative">
+        <a href="{% url 'index' %}" class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 0 0112 2.944a11.955 0 01-8.618 3.04A12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+              </path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold text-dark tracking-tight">Fake<span class="text-primary">News</span></span>
+        </a>
 
-</body>
+        <p class="text-slate-500 text-sm">
+          &copy; <span id="year"></span> Fake News App. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // File Upload Preview Logic
+    const fileInput = document.getElementById('profile-input');
+    const uploadLabel = document.getElementById('upload-label');
+    const uploadText = document.getElementById('upload-text');
+    const uploadSubtext = document.getElementById('upload-subtext');
+    const uploadIcon = document.getElementById('upload-icon');
+    const previewContainer = document.getElementById('image-preview-container');
+    const previewImg = document.getElementById('image-preview');
+
+    fileInput.addEventListener('change', function (e) {
+      if (this.files && this.files[0]) {
+        const file = this.files[0];
+
+        // Show filename feedback
+        uploadText.innerHTML = `<span class="font-bold text-green-600">Selected: ${file.name}</span>`;
+        uploadSubtext.textContent = 'Click inside the image to change';
+        uploadIcon.classList.replace('bg-blue-50', 'bg-green-50');
+        uploadIcon.classList.replace('text-blue-600', 'text-green-600');
+        uploadLabel.classList.add('border-green-500', 'bg-green-50/50');
+
+        // Show Image Preview
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImg.src = e.target.result;
+          previewContainer.classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Drag and Drop styling
+    ['dragenter', 'dragover'].forEach(eventName => {
+      fileInput.addEventListener(eventName, () => {
+        uploadLabel.classList.add('border-primary', 'bg-blue-50/50');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      fileInput.addEventListener(eventName, () => {
+        if (!fileInput.files.length) {
+          uploadLabel.classList.remove('border-primary', 'bg-blue-50/50');
+        }
+      });
+    });
+  </script>
+
 </html>

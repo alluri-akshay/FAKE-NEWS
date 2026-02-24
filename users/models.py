@@ -13,7 +13,7 @@ class user(models.Model):
     password = models.TextField(max_length=20, null=True)
     user_profile =models.FileField(upload_to="images/",null=True)
 
-    user_status = models.TextField(max_length=50, null=True, default='pending')
+    user_status = models.TextField(max_length=50, null=True, default='Pending')
     user_feedback = models.TextField(max_length=1000, null=True)
     messages = models.TextField(max_length=400, null=True)
 

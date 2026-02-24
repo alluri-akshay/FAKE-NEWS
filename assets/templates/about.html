@@ -2,479 +2,283 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Fake News | About the Project</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: '#3b82f6',
+            dark: '#0f172a',
+          },
+        }
+      }
+    }
+  </script>
 
-    <title>WoOx Travel - About Us</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    .navbar {
+      background-color: transparent;
+      transition: background-color 0.3s ease;
+    }
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
-    <link rel="stylesheet" href="{% static 'css/templatemo-woox-travel.css' %}">
-    <link rel="stylesheet" href="{% static 'css/owl.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<!--
+    .navbar.scrolled {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+    }
 
-TemplateMo 580 Woox Travel
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+    }
 
-https://templatemo.com/tm-580-woox-travel
+    .btn-primary:hover {
+      background-color: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+    }
 
--->
-  </head>
+    .floating-img {
+      animation: float 6s ease-in-out infinite;
+    }
 
-<body>
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
 
-  <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-      <span class="dot"></span>
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </div>
-  <!-- ***** Preloader End ***** -->
+      50% {
+        transform: translateY(-15px);
+      }
 
-  <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="{% url 'index' %}" class="logo">
-                        <img src="{% static 'images/logo.png' %}" alt="">
-                    </a>
-                    <!-- ***** Logo End ***** -->
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                      <li><a href="{% url 'index' %}" class="active">Home</a></li>
-                      <li><a href="{% url 'about' %}">About</a></li>
-                      <li><a href="{% url 'admin_login' %}">Admin</a></li>
-                      <li><a href="{% url 'user_login' %}">User</a></li>
-                      <li><a href="{% url 'index' %}">Logout</a></li>
-                  </ul>   
-                    <a class='menu-trigger'>
-                        <span>Menu</span>
-                    </a>
-                    <!-- ***** Menu End ***** -->
-                </nav>
-            </div>
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #f1f5f9;
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="fixed w-full top-0 z-50 navbar py-4" id="navbar">
+    <div class="container mx-auto px-6 max-w-7xl">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <a href="{% url 'index' %}" class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+              </path>
+            </svg>
+          </div>
+          <!-- Brand Name -->
+          <span class="text-2xl font-bold text-dark tracking-tight">Fake<span class="text-primary">News</span></span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav class="hidden md:flex items-center gap-8 font-medium">
+          <a href="{% url 'index' %}" class="text-slate-500 hover:text-dark transition-colors">Home</a>
+          <a href="{% url 'about' %}" class="text-primary">About</a>
+          <a href="{% url 'admin_login' %}" class="text-slate-500 hover:text-dark transition-colors">Admin</a>
+        </nav>
+
+        <!-- Auth Buttons -->
+        <div class="hidden md:flex items-center gap-4">
+          <a href="{% url 'user_login' %}" class="btn-primary px-6 py-2.5 rounded-full font-medium">
+            Check Article
+          </a>
         </div>
+      </div>
     </div>
   </header>
-  <!-- ***** Header Area End ***** -->
 
-  <!-- ***** Main Banner Area Start ***** -->
-  <div class="about-main-content">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="content">
-            <div class="blur-bg"></div>
-            <h4>EXPLORE OUR COUNTRY</h4>
-            <div class="line-dec"></div>
-            <h2>Welcome To India</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt uttersi labore et dolore magna aliqua is ipsum suspendisse ultrices gravida</p>
-            <div class="main-button">
-              <a href="{% url 'reservation' %}">Discover More</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- ***** Main Banner Area End ***** -->
-  
-  <div class="cities-town">
-    <div class="container">
-      <div class="row">
-        <div class="slider-content">
-          <div class="row">
-            <div class="col-lg-12">
-              <h2>India’s <em>Cities &amp; Towns</em></h2>
-            </div>
-            <div class="col-lg-12">
-              <div class="owl-cites-town owl-carousel">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="{% static 'images/cities-01.jpg' %}" alt="">
-                    <h4>Havana</h4>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <img src="{% static 'images/cities-02.jpg' %}" alt="">
-                    <h4>Kingston</h4>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <img src="{% static 'images/cities-03.jpg' %}" alt="">
-                    <h4>George Town</h4>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <img src="{% static 'images/cities-04.jpg' %}" alt="">
-                    <h4>Santo Domingo</h4>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <img src="images/cities-01.jpg" alt="">
-                    <h4>Havana</h4>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <img src="{% static 'images/cities-02.jpg' %}" alt="">
-                    <h4>Kingston</h4>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <img src="{% static 'images/cities-03.jpg' %}" alt="">
-                    <h4>George Town</h4>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <img src="{% static 'images/cities-04.jpg' %}" alt="">
-                    <h4>Santo Domingo</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Hero Section -->
+  <main class="flex-grow pt-32 pb-20">
+    <div class="container mx-auto px-6 max-w-7xl">
+      <div class="flex flex-col lg:flex-row items-center gap-16 mb-24">
 
-  <div class="weekly-offers">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-          <div class="section-heading text-center">
-            <h2>Best Weekly Offers In Each City</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="owl-weekly-offers owl-carousel">
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'images/offers-01.jpg' %}" alt="">
-                <div class="text">
-                  <h4>Havana<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="{% url 'reservation' %}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'images/offers-02.jpg' %}" alt="">
-                <div class="text">
-                  <h4>Kingston<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="{% url 'reservation' %}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'images/offers-03.jpg' %}" alt="">
-                <div class="text">
-                  <h4>George Town<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="{% url 'reservation' %}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'images/offers-01.jpg' %}" alt="">
-                <div class="text">
-                  <h4>Havana<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="{% url 'reservation' %}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'images/offers-02.jpg' %}" alt="">
-                <div class="text">
-                  <h4>Kingston<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="{% url 'reservation' %}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="{% static 'images/offers-03.jpg' %}" alt="">
-                <div class="text">
-                  <h4>George Town<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="{% url 'reservation' %}">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        <!-- Left Content -->
+        <div class="lg:w-1/2 flex flex-col items-start text-left">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark leading-tight mb-6 tracking-tight">
+            Our Mission to <span class="text-blue-600">Protect the Truth</span>
+          </h1>
 
-  <div class="more-about">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 align-self-center">
-          <div class="left-image">
-            <img src="{% static 'images/about-left-image.jpg' %}" alt="">
-          </div>
+          <p class="text-lg text-slate-500 mb-6 leading-relaxed">
+            In today's digital age, information spreads faster than ever before. With this speed comes the danger of
+            widespread misinformation, fake news, and deceptive journalism designed to manipulate public opinion.
+          </p>
+
+          <p class="text-lg text-slate-500 mb-10 leading-relaxed">
+            The <strong>Fake News Verifier Project</strong> was built as an automated, highly intelligent defense
+            mechanism. We utilize state-of-the-art machine learning capabilities to parse, cross-reference, and evaluate
+            the authenticity of articles instantly.
+          </p>
+
+          <a href="{% url 'user_login' %}"
+            class="inline-flex items-center gap-2 font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+            Start using the analyzer
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </a>
         </div>
-        <div class="col-lg-6">
-          <div class="section-heading">
-            <h2>Discover More About Our Country</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+
+        <!-- Right Cover Image -->
+        <div class="lg:w-1/2 w-full mt-10 lg:mt-0 relative">
+          <!-- Background blobs -->
+          <div
+            class="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob">
           </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="info-item">
-                <h4>150.640 +</h4>
-                <span>Total Guests Yearly</span>
-              </div>
+          <div
+            class="absolute bottom-0 -right-4 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"
+            style="animation-delay: 2s;"></div>
+
+          <!-- Clean AI Image -->
+          <img src="{% static 'images/ai_analysis.png' %}" alt="AI Text Analysis"
+            class="rounded-[2rem] shadow-2xl relative z-10 floating-img object-cover w-full border-4 border-white bg-slate-100"
+            onerror="this.src='https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1000&q=80'">
+        </div>
+      </div>
+
+      <!-- The Technology Section -->
+      <div class="border-t border-slate-200 pt-20 mb-10">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 class="text-3xl font-bold text-dark mb-4 tracking-tight">The Technology Behind It</h2>
+          <p class="text-slate-500 text-lg">Our system combines multiple layers of natural language processing to ensure
+            the highest degree of accuracy.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Feature 1 -->
+          <div class="feature-card">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                </path>
+              </svg>
             </div>
-            <div class="col-lg-6">
-              <div class="info-item">
-                <h4>175.000+</h4>
-                <span>Amazing Accomoditations</span>
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div class="info-item">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <h4>12.560+</h4>
-                    <span>Amazing Places</span>
-                  </div>
-                  <div class="col-lg-6">
-                    <h4>240.580+</h4>
-                    <span>Different Check-ins Yearly</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <h3 class="text-xl font-bold text-dark mb-3 tracking-tight">Linguistic Analysis</h3>
+            <p class="text-slate-500 leading-relaxed text-sm">We analyze sentence structure, emotional syntax, and
+              hyperbole—common traits found in fabricated journalism and clickbait articles.</p>
           </div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
-          <div class="main-button">
-            <a href="{% url 'reservation' %}">Discover More</a>
+
+          <!-- Feature 2 -->
+          <div class="feature-card">
+            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                </path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-dark mb-3 tracking-tight">Machine Learning</h3>
+            <p class="text-slate-500 leading-relaxed text-sm">Powered by trained ensemble classifiers (like Random
+              Forests and Logistic Regression) evaluated against thousands of known verified & fake news datasets.</p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="feature-card">
+            <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center mb-6">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+                </path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-dark mb-3 tracking-tight">Instant Verdicts</h3>
+            <p class="text-slate-500 leading-relaxed text-sm">Because our models are highly optimized, you don't have to
+              wait. Copy, paste, and instantly see whether the text is genuine or highly suspicious.</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="best-locations">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-          <div class="section-heading text-center">
-            <h2>Best Locations In Caribbeans</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
-          </div>
-        </div>
-        <div class="col-lg-8 offset-lg-2">
-          <div class="options">
-            <div class="option active" style="--optionBackground:url(https://buttoncreatives.com/html/woox/assets/images/best-01.jpg);">
-               <div class="shadow"></div>
-               <div class="label">
-                  <div class="icon">
-                     <i class="fas fa-expand"></i>
-                  </div>
-                  <div class="info">
-                     <div class="main">Havana</div>
-                     <div class="sub">Population: 2M</div>
-                  </div>
-               </div>
-            </div>
-            <div class="option" style="--optionBackground:url(https://buttoncreatives.com/html/woox/assets/images/best-02.jpg);">
-               <div class="shadow"></div>
-               <div class="label">
-                  <div class="icon">
-                    <i class="fas fa-expand"></i>
-                  </div>
-                  <div class="info">
-                     <div class="main">Kingston</div>
-                     <div class="sub">Population: 3.5M</div>
-                  </div>
-               </div>
-            </div>
-            <div class="option" style="--optionBackground:url(https://buttoncreatives.com/html/woox/assets/images/best-03.jpg);">
-               <div class="shadow"></div>
-               <div class="label">
-                  <div class="icon">
-                    <i class="fas fa-expand"></i>
-                  </div>
-                  <div class="info">
-                     <div class="main">London</div>
-                     <div class="sub">Population: 4.1M</div>
-                  </div>
-               </div>
-            </div>
-            <div class="option" style="--optionBackground:url(https://buttoncreatives.com/html/woox/assets/images/best-04.jpg);">
-               <div class="shadow"></div>
-               <div class="label">
-                  <div class="icon">
-                    <i class="fas fa-expand"></i>
-                  </div>
-                  <div class="info">
-                     <div class="main">Pristina</div>
-                     <div class="sub">Population: 520K</div>
-                  </div>
-               </div>
-            </div>
-            <div class="option" style="--optionBackground:url(https://buttoncreatives.com/html/woox/assets/images/best-05.jpg);">
-               <div class="shadow"></div>
-               <div class="label">
-                  <div class="icon">
-                    <i class="fas fa-expand"></i>
-                  </div>
-                  <div class="info">
-                     <div class="main">Paris</div>
-                     <div class="sub">Population: 3M</div>
-                  </div>
-               </div>
-            </div>
-         </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="main-button text-center">
-            <a href="{% url 'deals' %}">Discover All Places</a>
-          </div>
+      <!-- Bottom CTA -->
+      <div class="bg-blue-600 rounded-3xl p-10 md:p-16 text-center shadow-xl mt-10 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-black opacity-10 rounded-full blur-3xl -ml-20 -mb-20"></div>
+
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 relative z-10">Stop the spread of misinformation</h2>
+        <p class="text-blue-100 text-lg max-w-2xl mx-auto mb-10 relative z-10">Join our platform today. Evaluate
+          articles, check facts, and make sure that what you read is actually the truth.</p>
+
+        <div class="relative z-10">
+          <a href="{% url 'register' %}"
+            class="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-slate-50 transition-colors shadow-lg shadow-black/10 inline-block">
+            Create your free account
+          </a>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
-  <div class="call-to-action">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8">
-          <h2>Are You Looking To Travel ?</h2>
-          <h4>Make A Reservation By Clicking The Button</h4>
-        </div>
-        <div class="col-lg-4">
-          <div class="border-button">
-            <a href="{% url 'reservation' %}">Book Yours Now</a>
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-100 py-10 mt-auto">
+    <div class="container mx-auto px-6 max-w-7xl">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative">
+        <a href="{% url 'index' %}" class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+              </path>
+            </svg>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+          <span class="text-xl font-bold text-dark tracking-tight">Fake<span class="text-primary">News</span></span>
+        </a>
 
-  <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <p>Copyright © 2036 <a href="#">WoOx Travel</a> Company. All rights reserved. 
-          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a></p>
-        </div>
+        <p class="text-slate-500 text-sm">
+          &copy; <span id="year"></span> Fake News App. All rights reserved.
+        </p>
       </div>
     </div>
   </footer>
 
-
-  <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-
-  <script src="{% static 'js/isotope.min.js' %}"></script>
-  <script src="{% static 'js/owl-carousel.js' %}"></script>
-  <script src="{% static 'js/wow.js' %}"></script>
-  <script src="{% static 'js/tabs.js' %}"></script>
-  <script src="{% static 'js/popup.js' %}"></script>
-  <script src="{% static 'js/custom.js' %}"></script>
-
   <script>
-    $(".option").click(function(){
-      $(".option").removeClass("active");
-      $(this).addClass("active"); 
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Add shadow to navbar on scroll
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        document.getElementById('navbar').classList.add('scrolled');
+      } else {
+        document.getElementById('navbar').classList.remove('scrolled');
+      }
     });
   </script>
-
-  </body>
+</body>
 
 </html>

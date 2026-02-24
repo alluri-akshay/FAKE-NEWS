@@ -2,161 +2,430 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Fake News | Analytics Graph</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: '#3b82f6',
+            dark: '#0f172a',
+          },
+        }
+      }
+    }
+  </script>
 
-    <title>WoOx Travel - About Us</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+    }
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
-    <link rel="stylesheet" href="{% static 'css/templatemo-woox-travel.css' %}">
-    <link rel="stylesheet" href="{% static 'css/owl.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<!--
+    .app-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+    }
+  </style>
 
-TemplateMo 580 Woox Travel
+</head>
 
-https://templatemo.com/tm-580-woox-travel
+<body class="flex flex-col min-h-screen relative overflow-x-hidden">
 
--->
-  </head>
+  <!-- Subtle Background Elements -->
+  <div class="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
+    <div
+      class="absolute top-0 right-0 w-[50%] h-[50%] bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 translate-x-1/2 -translate-y-1/4">
+    </div>
+  </div>
 
-<body>
+  <!-- Header -->
+  <header class="fixed w-full top-0 z-50 navbar py-4">
+    <div class="container mx-auto px-6 max-w-7xl mx-auto">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <a href="{% url 'admin_console' %}" class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-dark rounded-xl flex items-center justify-center text-white shadow-lg shadow-black/30">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+              </path>
+            </svg>
+          </div>
+          <span class="text-2xl font-bold text-dark tracking-tight">Fake<span class="text-primary">News</span></span>
+        </a>
 
-  <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-      <span class="dot"></span>
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
+        <!-- Desktop Menu -->
+        <nav class="hidden lg:flex items-center gap-6 font-medium text-sm">
+          <a href="{% url 'admin_console' %}" class="text-slate-500 hover:text-dark transition-colors">Dashboard</a>
+
+          <!-- User Management Dropdown -->
+          <div class="relative group dropdown-container">
+            <button
+              class="dropdown-btn text-slate-500 hover:text-dark transition-colors flex items-center gap-1 focus:outline-none">
+              User Management
+              <svg class="w-4 h-4 transition-transform dropdown-icon" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div
+              class="dropdown-menu absolute w-48 bg-white border border-slate-100 rounded-xl shadow-lg py-2 mt-4 hidden z-50">
+              <a href="{% url 'pending_users' %}"
+                class="block px-4 py-2 text-slate-500 hover:text-primary hover:bg-slate-50">Pending Users</a>
+              <a href="{% url 'all_users' %}"
+                class="block px-4 py-2 text-slate-500 hover:text-primary hover:bg-slate-50">All Users</a>
+            </div>
+          </div>
+
+          <!-- Model Training Dropdown -->
+          <div class="relative group dropdown-container">
+            <button
+              class="dropdown-btn text-slate-500 hover:text-dark transition-colors flex items-center gap-1 focus:outline-none">
+              Model Training
+              <svg class="w-4 h-4 transition-transform dropdown-icon" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div
+              class="dropdown-menu absolute w-48 bg-white border border-slate-100 rounded-xl shadow-lg py-2 mt-4 hidden z-50">
+              <a href="{% url 'fned' %}"
+                class="block px-4 py-2 text-slate-500 hover:text-primary hover:bg-slate-50">FNED Model</a>
+              <a href="{% url 'cka' %}" class="block px-4 py-2 text-slate-500 hover:text-primary hover:bg-slate-50">CKA
+                Model</a>
+            </div>
+          </div>
+
+          <a href="{% url 'graph' %}" class="text-primary font-semibold">Analytics Graph</a>
+        </nav>
+
+        <!-- Logout -->
+        <div class="hidden md:block">
+          <a href="{% url 'index' %}"
+            class="flex items-center gap-2 px-4 py-2 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-red-500 transition-colors font-medium">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            <span>Log out</span>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-  <!-- ***** Preloader End ***** -->
+  </header>
 
-  <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="{% url 'index' %}" class="logo">
-                        <img src="{% static 'images/logo.png' %}" alt="">
-                    </a>
-                    <!-- ***** Logo End ***** -->
+  <!-- Main Content -->
+  <main class="flex-grow pt-32 pb-20 px-6 max-w-7xl mx-auto w-full">
 
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                        <li><a href="{% url 'admin_console' %}">Admindashboard</a></li>
-
-                        <!-- User Management Dropdown -->
-                        <li class="has-sub">
-                            <a href="javascript:void(0)" class="active">Usermanagement</a>
-                            <ul class="sub-menu">
-                                <li><a href="{% url 'pending_users' %}">Pending Users</a></li>
-                                <li><a href="{% url 'all_users' %}">All Users</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Model Training Dropdown -->
-                        <li class="has-sub">
-                            <a href="javascript:void(0)">Model-training</a>
-                            <ul class="sub-menu">
-                                <li><a href="{% url 'fned' %}">FNED Model</a></li>
-                                <li><a href="{% url 'cka' %}">CKA Model</a></li>
-                            </ul>
-                        </li>
-
-                        <li><a href="{% url 'graph' %}">Graph</a></li>
-                        <li><a href="{% url 'index' %}">Logout</a></li>
-                    </ul>
-
-                    <a class='menu-trigger'>
-                        <span>Menu</span>
-                    </a>
-                    <!-- ***** Menu End ***** -->
-                </nav>
-            </div>
+    <div class="mb-4">
+      <a href="{% url 'admin_console' %}"
+        class="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors font-medium text-sm group">
+        <div
+          class="p-1 px-2 bg-slate-100 rounded-lg group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+            </path>
+          </svg>
         </div>
+        <span>Back to Dashboard</span>
+      </a>
     </div>
-</header>
 
-  <!-- ***** Header Area End ***** -->
+    <!-- Title -->
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold text-dark tracking-tight mb-2">Real-Time Analytics</h1>
+      <p class="text-slate-500 max-w-lg">Comprehensive insights into model performance and system data.</p>
+    </div>
 
+    <!-- Stats Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div class="app-card border-l-4 border-l-blue-500 !p-6">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Dataset</p>
+        <h3 class="text-2xl font-bold text-dark">{{ dataset_stats.total }}</h3>
+        <p class="text-xs text-slate-500 mt-1">Total news articles analyzed</p>
+      </div>
+      <div class="app-card border-l-4 border-l-green-500 !p-6">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Real News</p>
+        <h3 class="text-2xl font-bold text-dark">{{ dataset_stats.real }}</h3>
+        <p class="text-xs text-green-500 mt-1">{{ dataset_stats.real }} articles</p>
+      </div>
+      <div class="app-card border-l-4 border-l-red-500 !p-6">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Fake News</p>
+        <h3 class="text-2xl font-bold text-dark">{{ dataset_stats.fake }}</h3>
+        <p class="text-xs text-red-500 mt-1">{{ dataset_stats.fake }} articles</p>
+      </div>
+      <div class="app-card border-l-4 border-l-amber-500 !p-6">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">System Users</p>
+        <h3 class="text-2xl font-bold text-dark">{{ user_stats.total }}</h3>
+        <p class="text-xs text-slate-500 mt-1">{{ user_stats.accepted }} active accounts</p>
+      </div>
+    </div>
 
-
-  
-
-  <!-- ***** Main Banner Area Start ***** -->
-  <div class="about-main-content">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="content">
-            <div class="blur-bg"></div>
-            <h4>Comparision Graph</h4>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Model Performance Chart -->
+      <div class="lg:col-span-2 app-card flex flex-col">
+        <h3 class="text-lg font-bold text-dark mb-6 flex items-center gap-2">
+          <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+            </path>
+          </svg>
+          Model Performance Comparison
+        </h3>
+        <div class="flex-grow">
+          <canvas id="performanceChart"></canvas>
         </div>
+      </div>
+
+      <!-- Dataset Distribution Chart -->
+      <div class="app-card flex flex-col">
+        <h3 class="text-lg font-bold text-dark mb-6 flex items-center gap-2">
+          <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+          </svg>
+          Dataset Overview
+        </h3>
+        <div class="flex-grow flex items-center justify-center">
+          <canvas id="distributionChart"></canvas>
+        </div>
+      </div>
     </div>
-  </div>
-   
 
-    <div id="page-wrapper">
+    <!-- Model Insights Table -->
+    <div class="mt-10 app-card">
+      <h3 class="text-lg font-bold text-dark mb-6">Detailed Model Metrics</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+              <th class="pb-3 px-4">Model Name</th>
+              <th class="pb-3 px-4">Accuracy</th>
+              <th class="pb-3 px-4">Precision</th>
+              <th class="pb-3 px-4">Recall</th>
+              <th class="pb-3 px-4">F1 Score</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            <tr>
+              <td class="py-4 px-4 font-bold text-slate-700">FNED (CNN + LogReg)</td>
+              <td class="py-4 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold">{{
+                  fned_data.accuracy }}</span></td>
+              <td class="py-4 px-4 text-slate-500 text-sm">{{ fned_data.precision }}</td>
+              <td class="py-4 px-4 text-slate-500 text-sm">{{ fned_data.recall }}</td>
+              <td class="py-4 px-4 text-slate-500 text-sm">{{ fned_data.f1_score }}</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-4 font-bold text-slate-700">CKA (Multi-scale CNN Ensemble)</td>
+              <td class="py-4 px-4"><span class="px-2 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-sm font-bold">{{
+                  cka_data.accuracy }}</span></td>
+              <td class="py-4 px-4 text-slate-500 text-sm">{{ cka_data.precision }}</td>
+              <td class="py-4 px-4 text-slate-500 text-sm">{{ cka_data.recall }}</td>
+              <td class="py-4 px-4 text-slate-500 text-sm">{{ cka_data.f1_score }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
 
-        
-
-        <center style="margin-right: 300px;">
-            <div class="container">
-                <div class="container mt-5">
-                    <h1>Model Comparison</h1>
-            
-                <!-- Display the graph -->
-                <img src="data:image/png;base64,{{ image_data }}" alt="Model Comparison Graph" style="margin-left: 200px; width: 500px; ">
-                </div>
-                    </div>
-                </div>
-            </div>
-      </center>
-
-  
-
-  <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-
-  <script src="{% static 'js/isotope.min.js' %}"></script>
-  <script src="{% static 'js/owl-carousel.js' %}"></script>
-  <script src="{% static 'js/wow.js' %}"></script>
-  <script src="{% static 'js/tabs.js' %}"></script>
-  <script src="{% static 'js/popup.js' %}"></script>
-  <script src="{% static 'js/custom.js' %}"></script>
-
+  <!-- Load Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    $(".option").click(function(){
-      $(".option").removeClass("active");
-      $(this).addClass("active"); 
+    document.addEventListener('DOMContentLoaded', function () {
+      // Performance Comparison Chart
+      const perfCtx = document.getElementById('performanceChart').getContext('2d');
+      const performanceChart = new Chart(perfCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Accuracy', 'Precision', 'Recall', 'F1 Score'],
+          datasets: [
+            {
+              label: 'FNED Model',
+              data: [
+                {{ fned_data.accuracy }} * 100,
+            {{ fned_data.precision }} * 100,
+                {{ fned_data.recall }} * 100,
+      {{ fned_data.f1_score }} * 100
+              ],
+      backgroundColor: 'rgba(59, 130, 246, 0.7)',
+      borderColor: 'rgb(59, 130, 246)',
+      borderWidth: 1,
+      borderRadius: 8,
+            },
+      {
+        label: 'CKA Model',
+        data: [
+          {{ cka_data.accuracy }} * 100,
+      {{ cka_data.precision }} * 100,
+      {{ cka_data.recall }} * 100,
+      {{ cka_data.f1_score }} * 100
+              ],
+      backgroundColor: 'rgba(99, 102, 241, 0.7)',
+      borderColor: 'rgb(99, 102, 241)',
+      borderWidth: 1,
+      borderRadius: 8,
+            }
+          ]
+        },
+      options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          grid: {
+            display: true,
+            color: 'rgba(0,0,0,0.05)'
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            padding: 20
+          }
+        }
+      }
+    }
+      });
+
+    // Dataset Distribution Chart
+    const distCtx = document.getElementById('distributionChart').getContext('2d');
+    const distributionChart = new Chart(distCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Real News', 'Fake News'],
+        datasets: [{
+          data: [{{ dataset_stats.real }}, {{ dataset_stats.fake }}],
+      backgroundColor: [
+        'rgba(34, 197, 94, 0.7)',
+        'rgba(239, 68, 68, 0.7)'
+      ],
+      borderColor: [
+        'rgb(34, 197, 94)',
+        'rgb(239, 68, 68)'
+      ],
+      borderWidth: 2,
+      hoverOffset: 15
+    }]
+        },
+    options: {
+      responsive: true,
+        maintainAspectRatio: true,
+          cutout: '70%',
+            plugins: {
+        legend: {
+          position: 'bottom',
+            labels: {
+            padding: 20,
+              usePointStyle: true
+          }
+        }
+      }
+    }
+      });
     });
   </script>
 
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-100 py-10 mt-auto relative z-10">
+    <div class="container mx-auto px-6 max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative">
+        <a href="{% url 'admin_console' %}" class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-dark rounded-lg flex items-center justify-center text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+              </path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold text-dark tracking-tight">Fake<span class="text-primary">News</span></span>
+        </a>
 
+        <p class="text-slate-500 text-sm">
+          &copy; <span id="year"></span> Fake News App. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
 
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
 
+    // Dropdown Toggle Logic
+    document.querySelectorAll('.dropdown-btn').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
+        const dropMenu = this.nextElementSibling;
+        const icon = this.querySelector('.dropdown-icon');
 
+        // Close all others first
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+          if (menu !== dropMenu) {
+            menu.classList.add('hidden');
+            menu.previousElementSibling.querySelector('.dropdown-icon').classList.remove('rotate-180');
+          }
+        });
 
+        // Toggle clicked menu
+        dropMenu.classList.toggle('hidden');
+        if (icon) icon.classList.toggle('rotate-180');
+      });
+    });
 
+    // Close dropdowns if clicking anywhere else on document
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.dropdown-container')) {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+          menu.classList.add('hidden');
+        });
+        document.querySelectorAll('.dropdown-icon').forEach(icon => {
+          icon.classList.remove('rotate-180');
+        });
+      }
+    });
+  </script>
 
-    
 </body>
+
 </html>

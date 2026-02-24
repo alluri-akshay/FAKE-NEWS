@@ -51,9 +51,13 @@ def register(req):
         print(user_fname, user_lname, user_age, user_mobile, user_password, users_image, user_email)
 
         try:
-            if user.objects.get(email = user_email):
-              return redirect('register')  # user already exists
-        except user.DoesNotExist:
+            if user.objects.filter(email=user_email).exists():
+                messages.error(req, 'Account already exists with this email!')
+                return redirect('register')
+        except Exception as e:
+            print(f"Error checking user: {e}")
+
+        try:
             user.objects.create(
                 fname=user_fname,
                 lname=user_lname,
@@ -61,10 +65,13 @@ def register(req):
                 age=user_age,
                 email=user_email,
                 mobile=user_mobile,
-                user_profile=users_image  # ✅ should be a single file
+                user_profile=users_image
             )
-            req.session['email'] = 'user_email'
+            messages.success(req, 'Account created successfully! Please wait for admin approval.')
             return redirect('user_login')
+        except Exception as e:
+            messages.error(req, f'Error creating account: {e}')
+            return redirect('register')
 
     return render(req, 'users/register.html')
 
@@ -81,7 +88,7 @@ def user_login(req):
             if user_details.password == user_password:
                 req.session['user_id'] = user_details.user_id  # store the user ID
                 print("hello")
-                if user_details.user_status == 'Accepted':
+                if user_details.user_status.strip().capitalize() == 'Accepted':
                     print('Login successful and session created.')
                     return redirect('user_console')
                 else:
@@ -96,7 +103,6 @@ def user_login(req):
 
 
 def user_console(req):
-        messages.success(req, 'Login Succesfully')
         return render(req, 'users/user_console.html')
 
 from django.contrib import messages
@@ -225,22 +231,67 @@ from pathlib import Path
 
 # Define paths
 BASE_DIR = Path(__file__).resolve().parent.parent
-CHAR_MODEL_PATH = BASE_DIR / 'D:/7/fake_news/dataset/news_characterizer.h5'
-COORD_MODEL_PATH = BASE_DIR / 'D:/7/fake_news/dataset/ensemble_coordinator.h5'
-TOKENIZER_PATH = BASE_DIR / 'D:/7/fake_news/dataset/tokenizer.pkl'
-METADATA_PATH = BASE_DIR / 'D:/7/fake_news/dataset/model_metadata.pkl'
+DATASET_DIR = BASE_DIR / 'dataset'
+CHAR_MODEL_PATH = DATASET_DIR / 'news_characterizer.h5'
+COORD_MODEL_PATH = DATASET_DIR / 'ensemble_coordinator.h5'
+TRUTH_PREDICTOR_PATH = DATASET_DIR / 'truth_predictor.pkl'
+TOKENIZER_PATH = DATASET_DIR / 'tokenizer.pkl'
+METADATA_PATH = DATASET_DIR / 'model_metadata.pkl'
 
-# Load models and tokenizer
-news_characterizer = load_model(str(CHAR_MODEL_PATH))
-ensemble_coordinator = load_model(str(COORD_MODEL_PATH))
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 
-with open(str(TOKENIZER_PATH), 'rb') as f:
-    tokenizer = pickle.load(f)
+# Component 3: Truth Predictor (must be defined for pickle to load it)
+class TruthPredictor:
+    def __init__(self):
+        self.models = [
+            RandomForestClassifier(n_estimators=100),
+            SVC(probability=True)
+        ]
+    
+    def fit(self, X, y):
+        for model in self.models:
+            model.fit(X, y)
+    
+    def predict(self, X):
+        predictions = []
+        for model in self.models:
+            pred = model.predict_proba(X)[:, 1]
+            predictions.append(pred)
+        return np.mean(predictions, axis=0)
 
-with open(str(METADATA_PATH), 'rb') as f:
-    metadata = pickle.load(f)
+# 🛠️ Fix for Pickle: Assign to __main__ so it can be deserialized
+import sys
+import __main__
+__main__.TruthPredictor = TruthPredictor
 
-MAX_LEN = metadata['max_len']
+# Pre-load components to memory for performance
+try:
+    print(f"Loading models from {DATASET_DIR}...")
+    news_characterizer = load_model(str(CHAR_MODEL_PATH))
+    ensemble_coordinator = load_model(str(COORD_MODEL_PATH))
+    
+    with open(str(TRUTH_PREDICTOR_PATH), 'rb') as f:
+        truth_predictor = pickle.load(f)
+
+    with open(str(TOKENIZER_PATH), 'rb') as f:
+        tokenizer = pickle.load(f)
+
+    with open(str(METADATA_PATH), 'rb') as f:
+        metadata = pickle.load(f)
+
+    MAX_LEN = metadata.get('max_len', 500)
+    from datetime import datetime
+    print(f"[SUCCESS] AI Models loaded successfully at {datetime.now()}")
+except Exception as e:
+    print(f"[ERROR] Could not load AI models.")
+    import traceback
+    traceback.print_exc()
+    news_characterizer = None
+    ensemble_coordinator = None
+    truth_predictor = None
+    tokenizer = None
+    MAX_LEN = 500
 
 def prediction(request):
     context = {}
@@ -248,20 +299,40 @@ def prediction(request):
         title = request.POST.get('title', '').strip()
         content = request.POST.get('content', '').strip()
 
-        # Preprocess text
-        text = f"{title} {content}"
-        seq = tokenizer.texts_to_sequences([text])
-        padded = pad_sequences(seq, maxlen=MAX_LEN)
+        if not (tokenizer and news_characterizer and ensemble_coordinator):
+            print(f"DEBUG: T={bool(tokenizer)} NC={bool(news_characterizer)} EC={bool(ensemble_coordinator)}")
+            context = {'error': 'AI Model System is currently offline. Please contact admin.'}
+            return render(request, 'users/prediction.html', context)
 
-        # Predict using models
-        features = news_characterizer.predict(padded, verbose=0)
-        coord_score = float(ensemble_coordinator.predict(features, verbose=0)[0][0])
-        prediction_label = 'REAL' if coord_score > 0.5 else 'FAKE'
+        try:
+            # Preprocess text
+            text = f"{title} {content}"
+            seq = tokenizer.texts_to_sequences([text])
+            padded = pad_sequences(seq, maxlen=MAX_LEN)
 
-        context = {
-            'coordinator_score': f"{coord_score:.4f}",
-            'prediction': prediction_label,
-        }
+            # Predict using models
+            features = news_characterizer.predict(padded, verbose=0)
+            coord_score = float(ensemble_coordinator.predict(features, verbose=0)[0][0])
+            
+            # Use truth_predictor if available
+            if truth_predictor:
+                truth_score = float(truth_predictor.predict(features)[0])
+                combined_score = (coord_score + truth_score) / 2
+            else:
+                combined_score = coord_score
+            
+            # Label based on combined score
+            prediction_label = 'REAL' if combined_score > 0.5 else 'FAKE'
+
+            context = {
+                'coordinator_score': f"{combined_score:.2%}",
+                'prediction': prediction_label,
+                'title': title,
+                'content': content
+            }
+        except Exception as e:
+            print(f"Prediction Error: {e}")
+            context = {'error': f'An error occurred during analysis: {e}'}
 
     return render(request, 'users/prediction.html', context)
 

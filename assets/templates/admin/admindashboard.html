@@ -1,207 +1,386 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Fake News | Admin Dashboard</title>
 
-    <title>WoOx Travel - About Us</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: '#3b82f6',
+            dark: '#0f172a',
+          },
+        }
+      }
+    }
+  </script>
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
-    <link rel="stylesheet" href="{% static 'css/templatemo-woox-travel.css' %}">
-    <link rel="stylesheet" href="{% static 'css/owl.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<!--
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+      -webkit-font-smoothing: antialiased;
+    }
 
-TemplateMo 580 Woox Travel
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+    }
 
-https://templatemo.com/tm-580-woox-travel
+    .app-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+    }
 
--->
-  </head>
+    .app-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
 
-<body>
+    /* Sub-menu styling for tailwind */
+    .group:hover .group-hover\:block {
+      display: block;
+    }
+  </style>
 
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
 
+<body class="flex flex-col min-h-screen relative overflow-x-hidden">
 
-    {% if messages %} {% for message in messages %}
-    <script>
-        swal({
-            title: "{% if 'success' in message.tags %}Success!{% elif 'error' in message.tags %}Error!{% else %}Notice{% endif %}",
-            text: "{{ message|escapejs }}",
-            icon: "{% if 'success' in message.tags %}success{% elif 'error' in message.tags %}error{% else %}info{% endif %}",
-            button: "OK",
-        });
-    </script>
-    {% endfor %} {% endif %}
-
-  <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-      <span class="dot"></span>
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
+  <!-- Custom Tailwind Toast Notification (Replaces SWAL) -->
+  {% if messages %}
+  <div id="toast-container" class="fixed top-24 right-6 z-[100] flex flex-col gap-3 pointer-events-none">
+    {% for message in messages %}
+    <div
+      class="toast-message bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 flex items-start gap-4 transform transition-all duration-500 translate-x-full opacity-0 pointer-events-auto max-w-sm w-full">
+      {% if 'success' in message.tags %}
+      <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center flex-shrink-0 text-green-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
       </div>
+      {% endif %}
+
+      {% if 'error' in message.tags %}
+      <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0 text-red-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </div>
+      {% endif %}
+
+      {% if not 'success' in message.tags and not 'error' in message.tags %}
+      <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0 text-blue-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      {% endif %}
+      <div class="flex-1">
+        <h4 class="text-dark font-bold text-sm mb-0.5 capitalize">
+          {% if 'success' in message.tags %}Success!{% endif %}
+          {% if 'error' in message.tags %}Error!{% endif %}
+          {% if not 'success' in message.tags and not 'error' in message.tags %}Notice{% endif %}
+        </h4>
+        <p class="text-slate-500 text-sm">{{ message }}</p>
+      </div>
+      <button
+        onclick="this.closest('.toast-message').classList.add('opacity-0'); setTimeout(() => this.closest('.toast-message').remove(), 300)"
+        class="text-slate-400 hover:text-slate-600 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+  <script>
+    document.querySelectorAll('.toast-message').forEach((toast, index) => {
+      setTimeout(() => {
+        toast.classList.remove('translate-x-full', 'opacity-0');
+      }, 100 + (index * 100));
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 500);
+      }, 5000 + (index * 100));
+    });
+  </script>
+  {% endif %}
+
+
+  <!-- Subtle Background Elements -->
+  <div class="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
+    <div
+      class="absolute top-0 right-0 w-[50%] h-[50%] bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 translate-x-1/2 -translate-y-1/4">
     </div>
   </div>
-  <!-- ***** Preloader End ***** -->
 
-  <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="{% url 'index' %}" class="logo">
-                        <img src="{% static 'images/logo.png' %}" alt="">
-                    </a>
-                    <!-- ***** Logo End ***** -->
+  <!-- Header -->
+  <header class="fixed w-full top-0 z-50 navbar py-4">
+    <div class="container mx-auto px-6 max-w-7xl">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <a href="{% url 'admin_console' %}" class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-dark rounded-xl flex items-center justify-center text-white shadow-lg shadow-black/30">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+              </path>
+            </svg>
+          </div>
+          <span class="text-2xl font-bold text-dark tracking-tight">Fake<span class="text-primary">News</span></span>
+        </a>
 
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                        <li><a href="{% url 'admin_console' %}">Admindashboard</a></li>
+        <!-- Desktop Menu -->
+        <nav class="hidden lg:flex items-center gap-6 font-medium text-sm">
+          <a href="{% url 'admin_console' %}" class="text-primary font-semibold">Dashboard</a>
 
-                        <!-- User Management Dropdown -->
-                        <li class="has-sub">
-                            <a href="javascript:void(0)" class="active">Usermanagement</a>
-                            <ul class="sub-menu">
-                                <li><a href="{% url 'pending_users' %}">Pending Users</a></li>
-                                <li><a href="{% url 'all_users' %}">All Users</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Model Training Dropdown -->
-                        <li class="has-sub">
-                            <a href="javascript:void(0)">Model-training</a>
-                            <ul class="sub-menu">
-                                <li><a href="{% url 'fned' %}">FNED Model</a></li>
-                                <li><a href="{% url 'cka' %}">CKA Model</a></li>
-                            </ul>
-                        </li>
-
-                        <li><a href="{% url 'graph' %}">Graph</a></li>
-                        <li><a href="{% url 'index' %}">Logout</a></li>
-                    </ul>
-
-                    <a class='menu-trigger'>
-                        <span>Menu</span>
-                    </a>
-                    <!-- ***** Menu End ***** -->
-                </nav>
+          <!-- User Management Dropdown -->
+          <div class="relative group dropdown-container">
+            <button
+              class="dropdown-btn text-slate-500 hover:text-dark transition-colors flex items-center gap-1 focus:outline-none">
+              User Management
+              <svg class="w-4 h-4 transition-transform dropdown-icon" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div
+              class="dropdown-menu absolute left-0 w-48 bg-white border border-slate-100 rounded-xl shadow-lg py-2 mt-4 hidden z-50">
+              <a href="{% url 'pending_users' %}"
+                class="block px-4 py-2 text-slate-500 hover:text-primary hover:bg-slate-50">Pending Users</a>
+              <a href="{% url 'all_users' %}"
+                class="block px-4 py-2 text-slate-500 hover:text-primary hover:bg-slate-50">All Users</a>
             </div>
+          </div>
+
+          <!-- Model Training Dropdown -->
+          <div class="relative group dropdown-container">
+            <button
+              class="dropdown-btn text-slate-500 hover:text-dark transition-colors flex items-center gap-1 focus:outline-none">
+              Model Training
+              <svg class="w-4 h-4 transition-transform dropdown-icon" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div
+              class="dropdown-menu absolute left-0 w-48 bg-white border border-slate-100 rounded-xl shadow-lg py-2 mt-4 hidden z-50">
+              <a href="{% url 'fned' %}"
+                class="block px-4 py-2 text-slate-500 hover:text-primary hover:bg-slate-50">FNED Model</a>
+              <a href="{% url 'cka' %}" class="block px-4 py-2 text-slate-500 hover:text-primary hover:bg-slate-50">CKA
+                Model</a>
+            </div>
+          </div>
+
+          <a href="{% url 'graph' %}" class="text-slate-500 hover:text-dark transition-colors">Analytics Graph</a>
+        </nav>
+
+        <!-- Logout -->
+        <div class="hidden md:block">
+          <a href="{% url 'index' %}"
+            class="flex items-center gap-2 px-4 py-2 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-red-500 transition-colors font-medium">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            <span>Log out</span>
+          </a>
         </div>
-    </div>
-</header>
 
-  <!-- ***** Header Area End ***** -->
-
-
-
-  
-
-  <!-- ***** Main Banner Area Start ***** -->
-  <div class="about-main-content">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="content">
-            <div class="blur-bg"></div>
-            <h4>WELCOME TO ADMIN TO DASHBOARD</h4>
-            
-            
-            
-            
-              
-            
-          
+        <!-- Mobile Menu Button -->
+        <button class="lg:hidden text-slate-600 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
       </div>
     </div>
-  </div>
-  <!-- ***** Main Banner Area End ***** -->
-  
-  
-  <div class="row">
-    <!--quick info section -->
-    <div class="col-lg-3">
-        <div class="alert alert-danger text-center">
-            <i class="fa fa-calendar fa-3x"></i>
-            <h6>Pending Users</h6>
-            <h2>{{a}}</h2>
+  </header>
 
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="alert alert-success text-center">
-            <i class="fa  fa-beer fa-3x"></i>
-            <h6>Rejected Users</h6>
-            <h2>{{c}}</h2>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="alert alert-info text-center">
-            <i class="fa fa-rss fa-3x"></i>
-            <h6>All Users</h6>
-            <h2>{{b}}</h2>
+  <!-- Main Content -->
+  <main class="flex-grow pt-32 pb-20 px-6 max-w-7xl mx-auto w-full">
+    <!-- Welcome Header -->
+    <div
+      class="mb-12 border-b border-slate-200/60 pb-8 mt-4 rounded-3xl bg-dark text-white p-10 relative overflow-hidden shadow-xl">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-primary opacity-20 rounded-full blur-3xl -mr-20 -mt-20"></div>
+      <div class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500 opacity-20 rounded-full blur-3xl -ml-20 -mb-20">
+      </div>
 
+      <div class="relative z-10 flex items-center gap-4 mb-3">
+        <div
+          class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/20">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+            </path>
+          </svg>
         </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="alert alert-warning text-center">
-            <i class="fa  fa-pencil fa-3x"></i>
-            <h6>Acepect Users</h6>
-            <h2>{{d}}</h2>
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight mb-1">System Overview</h1>
+          <p class="text-slate-300">Welcome to the Fake News Platform Administration Dashboard.</p>
         </div>
+      </div>
     </div>
 
-<br><br>
-<br><br><br>
-<br><br><br>
-<br><br><br><br>
-  <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <p>Copyright © 2036 <a href="#">WoOx Travel</a> Company. All rights reserved. 
-          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a></p>
+    <!-- Quick Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Pending Users -->
+      <a href="{% url 'pending_users' %}"
+        class="app-card border-l-4 border-l-amber-500 block hover:scale-[1.02] transition-transform">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Awaiting Review</span>
         </div>
+        <h3 class="text-3xl font-bold text-dark mb-1">{{a}}</h3>
+        <p class="text-sm font-semibold text-slate-500">Pending Users</p>
+      </a>
+
+      <!-- Rejected Users -->
+      <a href="{% url 'all_users' %}?status=Rejected"
+        class="app-card border-l-4 border-l-red-500 block hover:scale-[1.02] transition-transform">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
+              </path>
+            </svg>
+          </div>
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Access Denied</span>
+        </div>
+        <h3 class="text-3xl font-bold text-dark mb-1">{{c}}</h3>
+        <p class="text-sm font-semibold text-slate-500">Rejected Users</p>
+      </a>
+
+      <!-- All Users -->
+      <a href="{% url 'all_users' %}"
+        class="app-card border-l-4 border-l-blue-500 block hover:scale-[1.02] transition-transform">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+              </path>
+            </svg>
+          </div>
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Database</span>
+        </div>
+        <h3 class="text-3xl font-bold text-dark mb-1">{{b}}</h3>
+        <p class="text-sm font-semibold text-slate-500">All Registered Users</p>
+      </a>
+
+      <!-- Accepted Users -->
+      <a href="{% url 'all_users' %}?status=Accepted"
+        class="app-card border-l-4 border-l-green-500 block hover:scale-[1.02] transition-transform">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Accounts</span>
+        </div>
+        <h3 class="text-3xl font-bold text-dark mb-1">{{d}}</h3>
+        <p class="text-sm font-semibold text-slate-500">Accepted Users</p>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-100 py-10 mt-auto relative z-10">
+    <div class="container mx-auto px-6 max-w-7xl">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative">
+        <a href="{% url 'admin_console' %}" class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-dark rounded-lg flex items-center justify-center text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+              </path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold text-dark tracking-tight">Fake<span class="text-primary">News</span></span>
+        </a>
+
+        <p class="text-slate-500 text-sm">
+          &copy; <span id="year"></span> Fake News App. All rights reserved.
+        </p>
       </div>
     </div>
   </footer>
 
-
-  <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-
-  <script src="{% static 'js/isotope.min.js' %}"></script>
-  <script src="{% static 'js/owl-carousel.js' %}"></script>
-  <script src="{% static 'js/wow.js' %}"></script>
-  <script src="{% static 'js/tabs.js' %}"></script>
-  <script src="{% static 'js/popup.js' %}"></script>
-  <script src="{% static 'js/custom.js' %}"></script>
-
   <script>
-    $(".option").click(function(){
-      $(".option").removeClass("active");
-      $(this).addClass("active"); 
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Dropdown Toggle Logic (Tap/Click robust)
+    document.querySelectorAll('.dropdown-btn').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const dropMenu = this.nextElementSibling;
+        const icon = this.querySelector('.dropdown-icon');
+
+        // Close all others first
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+          if (menu !== dropMenu) {
+            menu.classList.add('hidden');
+            menu.previousElementSibling.querySelector('.dropdown-icon').classList.remove('rotate-180');
+          }
+        });
+
+        // Toggle clicked menu
+        dropMenu.classList.toggle('hidden');
+        if (icon) icon.classList.toggle('rotate-180');
+      });
+    });
+
+    // Close dropdowns if clicking anywhere else on document
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.dropdown-container')) {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+          menu.classList.add('hidden');
+        });
+        document.querySelectorAll('.dropdown-icon').forEach(icon => {
+          icon.classList.remove('rotate-180');
+        });
+      }
     });
   </script>
 
-  </body>
+</body>
 
 </html>

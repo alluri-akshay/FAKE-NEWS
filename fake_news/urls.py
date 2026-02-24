@@ -36,8 +36,8 @@ urlpatterns = [
     path('admin_console/', a.admin_console, name='admin_console'),
     path('pending_users/', a.pending_users, name='pending_users'),
     # path('accepted_users/', a.accepted_users, name='accepted_users'),
-    path('accepted_users/<int:id>', a.accepted_users, name = 'accepted_users'),
-    path('reject_user/<int:id>', a.reject_user, name='reject_user'),
+    # path('accepted_users/<int:id>', a.accepted_users, name = 'accepted_users'),
+    # path('reject_user/<int:id>', a.reject_user, name='reject_user'),
     path('all_users/', a.all_users, name='all_users'),
 
     path('Admin_Accept_Button/<int:id>', a.Admin_Accept_Button, name='Admin_Accept_Button'),
