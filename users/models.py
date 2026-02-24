@@ -19,3 +19,14 @@ class user(models.Model):
 
     class Meta:
         db_table = 'user_register'
+
+class NewsPrediction(models.Model):
+    user = models.ForeignKey(user, on_delete=models.CASCADE)
+    title = models.TextField()
+    content = models.TextField()
+    verdict = models.CharField(max_length=10) # REAL or FAKE
+    confidence = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'user_predictions'

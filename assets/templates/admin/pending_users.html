@@ -103,7 +103,8 @@
             {% endif %}
             <div class="flex-1">
                 <h4 class="text-dark font-bold text-sm mb-0.5 capitalize">
-                    {% if 'success' in message.tags %}Success!{% elif 'error' in message.tags %}Error!{% else %}Notice{% endif %}
+                    {% if 'success' in message.tags %}Success!{% elif 'error' in message.tags %}Error!{% else %}Notice{%
+                    endif %}
                 </h4>
                 <p class="text-slate-500 text-sm">{{ message }}</p>
             </div>
@@ -353,7 +354,8 @@
                 </a>
 
                 <p class="text-slate-500 text-sm">
-                    &copy; <span id="year"></span> Fake News App. All rights reserved.
+                    &copy; <span id="year"></span> Fake News App. All rights reserved. . Design by Batch 7, Computer
+                    Science and Engineering, Pragati Engineering College(Autonomous)
                 </p>
             </div>
         </div>

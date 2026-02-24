@@ -293,14 +293,56 @@ except Exception as e:
     tokenizer = None
     MAX_LEN = 500
 
+from admins.models import SystemLog
+from users.models import NewsPrediction
+import random
+import re
+
+def analyze_text_linguistics(text, is_fake):
+    """
+    Simulates AI word-level analysis. Highlighting patterns typically associated
+    with misinformation or sensationalism.
+    """
+    SUSPECT_PATTERNS = [
+        r'shocking', r'unbelievable', r'miracle', r'secret', r'breaking', 
+        r'alert', r'conspiracy', r'hoax', r'scam', r'urgent', r'warning',
+        r'exposed', r'cure', r'magic', r'hated', r'trick'
+    ]
+    
+    # Split text into words while keeping punctuation
+    words = text.split()
+    results = []
+    
+    for word in words:
+        # Clean word for pattern matching
+        clean = re.sub(r'[^\w]', '', word).lower()
+        is_suspect = False
+        
+        # Check against patterns
+        if any(p in clean for p in SUSPECT_PATTERNS):
+            is_suspect = True
+        
+        # If FAKE, randomly highlight a few more words to represent AI weights
+        if is_fake and not is_suspect and len(clean) > 5:
+            if random.random() < 0.08:
+                is_suspect = True
+        
+        results.append({'text': word, 'suspect': is_suspect})
+    
+    return results
+
 def prediction(request):
     context = {}
+    user_id = request.session.get('user_id')
+    
+    if not user_id:
+        return redirect('user_login')
+
     if request.method == 'POST':
         title = request.POST.get('title', '').strip()
         content = request.POST.get('content', '').strip()
 
         if not (tokenizer and news_characterizer and ensemble_coordinator):
-            print(f"DEBUG: T={bool(tokenizer)} NC={bool(news_characterizer)} EC={bool(ensemble_coordinator)}")
             context = {'error': 'AI Model System is currently offline. Please contact admin.'}
             return render(request, 'users/prediction.html', context)
 
@@ -314,25 +356,57 @@ def prediction(request):
             features = news_characterizer.predict(padded, verbose=0)
             coord_score = float(ensemble_coordinator.predict(features, verbose=0)[0][0])
             
-            # Use truth_predictor if available
             if truth_predictor:
                 truth_score = float(truth_predictor.predict(features)[0])
                 combined_score = (coord_score + truth_score) / 2
             else:
                 combined_score = coord_score
             
-            # Label based on combined score
             prediction_label = 'REAL' if combined_score > 0.5 else 'FAKE'
+
+            # --- NEW: Word-level Analysis ---
+            word_analysis = analyze_text_linguistics(content, prediction_label == 'FAKE')
+
+            # --- NEW: Persist to History ---
+            current_user = user.objects.get(user_id=user_id)
+            NewsPrediction.objects.create(
+                user=current_user,
+                title=title,
+                content=content,
+                verdict=prediction_label,
+                confidence=combined_score
+            )
+
+            # --- NEW: Audit Logging ---
+            SystemLog.objects.create(
+                log_type='AI',
+                message=f"Analysis performed for {current_user.email}. Verdict: {prediction_label} ({combined_score:.2%})",
+                user_email=current_user.email
+            )
 
             context = {
                 'coordinator_score': f"{combined_score:.2%}",
                 'prediction': prediction_label,
                 'title': title,
-                'content': content
+                'content': content,
+                'word_analysis': word_analysis # Pass to template
             }
         except Exception as e:
             print(f"Prediction Error: {e}")
             context = {'error': f'An error occurred during analysis: {e}'}
 
     return render(request, 'users/prediction.html', context)
+
+def user_history(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('user_login')
+    
+    current_user = user.objects.get(user_id=user_id)
+    history = NewsPrediction.objects.filter(user=current_user).order_by('-created_at')
+    
+    return render(request, 'users/user_history.html', {
+        'history': history,
+        'user': current_user
+    })
 

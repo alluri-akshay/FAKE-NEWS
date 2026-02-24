@@ -51,7 +51,10 @@ urlpatterns = [
     path('fned',a.fned,name='fned'),
     path('cka',a.cka,name='cka'),
     path('graph',a.graph,name='graph'),
-    path('prediction',u.prediction,name='prediction')
+    path('prediction',u.prediction,name='prediction'),
+    path('user_history/', u.user_history, name='user_history'),
+    path('admin_logs/', a.admin_logs, name='admin_logs'),
+    path('export_report/', a.export_report, name='export_report'),
 
     
 

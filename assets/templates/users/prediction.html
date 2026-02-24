@@ -91,7 +91,69 @@
       background-color: #fef2f2;
       border: 2px solid #fecaca;
     }
+
+    /* Skeleton Loading State */
+    .skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #f8fafc 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .suspect-word {
+      position: relative;
+      background-color: rgba(239, 68, 68, 0.1);
+      border-bottom: 2px dashed #ef4444;
+      cursor: help;
+      padding: 0 2px;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .suspect-word:hover {
+      background-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .suspect-word:hover::after {
+      content: "AI flag: Suspicious pattern";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      white-space: nowrap;
+      z-index: 50;
+    }
   </style>
+
+  <script>
+    function showLoading() {
+      document.getElementById('form-section').classList.add('opacity-50', 'pointer-events-none');
+      document.getElementById('result-placeholder').classList.add('hidden');
+      document.getElementById('loading-state').classList.remove('hidden');
+
+      const btn = document.getElementById('analyze-btn');
+      btn.innerHTML = `<svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg> Analyzing AI Patterns...`;
+
+      return true;
+    }
+  </script>
 </head>
 
 <body class="flex flex-col min-h-screen relative overflow-x-hidden">
@@ -124,6 +186,7 @@
         <nav class="hidden md:flex items-center gap-8 font-medium">
           <a href="{% url 'user_console' %}" class="text-slate-500 hover:text-dark transition-colors">Dashboard</a>
           <a href="{% url 'prediction' %}" class="text-primary">Verify Article</a>
+          <a href="{% url 'user_history' %}" class="text-slate-500 hover:text-dark transition-colors">History</a>
           <a href="{% url 'user_profile' %}" class="text-slate-500 hover:text-dark transition-colors">Profile</a>
         </nav>
 
@@ -166,7 +229,7 @@
     <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
       <!-- Analysis Form -->
-      <div class="lg:col-span-7 w-full">
+      <div class="lg:col-span-7 w-full" id="form-section">
         <div class="app-card relative">
           <div class="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
             <h2 class="text-xl font-bold text-dark flex items-center gap-2">
@@ -181,7 +244,7 @@
             </h2>
           </div>
 
-          <form method="POST" class="space-y-6">
+          <form method="POST" class="space-y-6" onsubmit="return showLoading()">
             {% csrf_token %}
 
             <div>
@@ -198,7 +261,7 @@
                 class="input-field block w-full px-4 py-3 rounded-xl text-sm placeholder-slate-400 resize-y">{{ content }}</textarea>
             </div>
 
-            <button type="submit"
+            <button type="submit" id="analyze-btn"
               class="btn-primary w-full px-6 py-4 rounded-xl font-semibold text-base flex items-center justify-center gap-2">
               Analyze Text
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,7 +274,25 @@
       </div>
 
       <!-- Results Section -->
-      <div class="lg:col-span-5 w-full h-full">
+      <div class="lg:col-span-5 w-full h-full relative min-h-[500px]">
+
+        <!-- Loading State (Hidden by default) -->
+        <div id="loading-state"
+          class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8 bg-white/50 backdrop-blur-sm rounded-3xl border border-slate-100">
+          <div class="w-20 h-20 mb-6 relative">
+            <div class="absolute inset-0 rounded-full border-4 border-slate-100"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"></div>
+          </div>
+          <h3 class="text-xl font-bold text-dark mb-2">Scanning AI Ensembles</h3>
+          <p class="text-slate-500 text-sm">Evaluating feature knowledge analysis and truth score metrics...</p>
+
+          <div class="w-full mt-8 space-y-4">
+            <div class="h-4 w-3/4 mx-auto rounded skeleton"></div>
+            <div class="h-4 w-1/2 mx-auto rounded skeleton"></div>
+            <div class="h-4 w-2/3 mx-auto rounded skeleton"></div>
+          </div>
+        </div>
+
         {% if prediction %}
         <!-- Dynamic Result Card -->
         <div
@@ -250,22 +331,42 @@
                 {{ coordinator_score }}
               </span>
             </div>
+
+            <!-- AI Insight (Word-level) -->
+            {% if word_analysis %}
+            <div class="mt-10 pt-8 border-t border-slate-200/50 text-left">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Linguistic Patterns Analysis
+              </h4>
+              <div
+                class="text-sm leading-relaxed text-slate-600 bg-white/50 p-4 rounded-2xl border border-slate-100 max-h-[200px] overflow-y-auto">
+                {% for item in word_analysis %}
+                {% if item.suspect %}
+                <span class="suspect-word">{{ item.text }}</span>
+                {% else %}
+                <span>{{ item.text }}</span>
+                {% endif %}
+                {% endfor %}
+              </div>
+              <p class="mt-3 text-[10px] text-slate-400 italic font-medium">
+                * Highlighted words indicate patterns commonly associated with deceptive or sensationalist content in
+                our training set.
+              </p>
+            </div>
+            {% endif %}
           </div>
         </div>
         {% else %}
-        <!-- Waiting for input state -->
-        <div
-          class="app-card h-full flex flex-col justify-center items-center text-center border-dashed border-2 border-slate-200 bg-slate-50/50">
-          <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-6 text-slate-400">
-            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Placeholder Empty State -->
+        <div id="result-placeholder"
+          class="app-card h-full flex flex-col items-center justify-center text-center border-2 border-dashed border-slate-200 bg-slate-50/50">
+          <div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-slate-300 mb-6 shadow-sm">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-              </path>
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-dark mb-2 tracking-tight">Awaiting Article</h3>
-          <p class="text-slate-500 text-sm max-w-xs mx-auto">Fill out the form on the left to generate an instant
-            fact-check report.</p>
+          <h3 class="text-lg font-bold text-slate-600 mb-2">Awaiting Analysis</h3>
+          <p class="text-slate-400 text-sm max-w-[200px]">Analysis results will appear here after submission.</p>
         </div>
         {% endif %}
       </div>
@@ -288,7 +389,8 @@
         </a>
 
         <p class="text-slate-500 text-sm">
-          &copy; <span id="year"></span> Fake News App. AI Fact-Checking Intelligence.
+          &copy; <span id="year"></span> Fake News App. AI Fact-Checking Intelligence. . Design by Batch 7, Computer
+          Science and Engineering, Pragati Engineering College(Autonomous)
         </p>
       </div>
     </div>

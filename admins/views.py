@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.conf import settings
 from users.models import user
+from admins.models import SystemLog
 
 # Machine Learning Imports
 from sklearn.model_selection import train_test_split
@@ -108,6 +109,7 @@ def admin_login(request):
     a_email, a_password = 'admin@gmail.com', 'admin'
     if request.method == 'POST':
         if a_email == request.POST.get('email') and a_password == request.POST.get('pwd'):
+            SystemLog.objects.create(log_type='ADMIN', message="Admin logged into system control panel.")
             messages.success(request, 'Login successful')
             return redirect('admin_console')
         messages.error(request, 'Login credentials were incorrect.')
@@ -118,7 +120,8 @@ def admin_console(req):
         'a': user.objects.filter(user_status__iexact='Pending').count(),
         'b': user.objects.all().count(),
         'c': user.objects.filter(user_status__iexact='Rejected').count(),
-        'd': user.objects.filter(user_status__iexact='Accepted').count()
+        'd': user.objects.filter(user_status__iexact='Accepted').count(),
+        'recent_logs': SystemLog.objects.all().order_by('-created_at')[:5]
     }
     return render(req, 'admin/admindashboard.html', context)
 
@@ -131,22 +134,6 @@ def all_users(request):
     paginator = Paginator(users_list, 5)
     page_obj = paginator.get_page(request.GET.get('page'))
     return render(request, 'admin/all_users.html', {'u': page_obj, 'status': status_filter})
-
-def Admin_Accept_Button(request, id):
-    u = user.objects.get(user_id=id)
-    u.user_status = "Accepted"
-    u.save()
-    messages.success(request, "Status Changed Successfully")
-    messages.warning(request, "Accepted")
-    return redirect('pending_users')
-
-def Admin_Reject_Btn(request, id):
-    u = user.objects.get(user_id=id)
-    u.user_status = "Rejected"
-    u.save()
-    messages.success(request, "Status Changed Successfully")
-    messages.warning(request, "Rejected")
-    return redirect('pending_users')
 
 # --- Model Evaluation Views ---
 
@@ -194,3 +181,50 @@ def graph(req):
     }
 
     return render(req, 'admin/graph.html', context)
+
+
+def Admin_Accept_Button(request, id):
+    u = user.objects.get(user_id=id)
+    u.user_status = 'Accepted'
+    u.save()
+    SystemLog.objects.create(log_type='ADMIN', message=f"Accepted user registration for: {u.email}")
+    messages.success(request, f'User {u.email} has been approved.')
+    return redirect('pending_users')
+
+
+def Admin_Reject_Btn(request, id):
+    u = user.objects.get(user_id=id)
+    u.user_status = 'Rejected'
+    u.save()
+    SystemLog.objects.create(log_type='ADMIN', message=f"Rejected user registration for: {u.email}")
+    messages.error(request, f'User {u.email} has been rejected.')
+    return redirect('pending_users')
+
+
+def admin_logs(request):
+    logs = SystemLog.objects.all().order_by('-created_at')
+    
+    # Optional filtering by type
+    log_filter = request.GET.get('type')
+    if log_filter:
+        logs = logs.filter(log_type=log_filter)
+        
+    return render(request, 'admin/admin_logs.html', {'logs': logs})
+
+
+def export_report(request):
+    import csv
+    from django.http import HttpResponse
+    from users.models import NewsPrediction
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="fake_news_system_report.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Date', 'User', 'Article Title', 'Verdict', 'Confidence'])
+
+    predictions = NewsPrediction.objects.all().order_by('-created_at')
+    for p in predictions:
+        writer.writerow([p.created_at, p.user.email, p.title, p.verdict, f"{p.confidence:.2%}"])
+
+    return response
